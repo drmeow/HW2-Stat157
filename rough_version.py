@@ -37,5 +37,5 @@ d = {'Src':Src, 'Eqid':Eqid, 'Datetime':Time , 'Lat':Lat , 'Lon':Lon ,'Magnitude
 
 dc=DataFrame(d,columns=['Src','Eqid','Datetime','Lat','Lon','Magnitude','Depth','NST','Region'])
 
-dc
+
 
