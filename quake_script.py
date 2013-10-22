@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 from pytz import timezone
 import pytz
 from mpl_toolkits.basemap import Basemap
+
 # <codecell>
 
 def Milli_to_DateTime(millisec): #converting millsec time data into recognizable time data 
@@ -78,15 +79,13 @@ def DataCleaning(whichdata):
             Region[x]   = data['features'][x]['properties']['place']
             Magnitude[x]=data['features'][x]['properties']['mag']
         
-        #making data set by using variables that we obtained
         converted_time= Milli_to_DateTime(Time)
         rawdata= {'Src':Src, 'Eqid':Eqid, 'Datetime':converted_time , 'Lat':Lat , 'Lon':Lon ,'Magnitude':Magnitude,'Depth':Depth,'NST': Nst,'Region': Region }
-        
-        #converting data set into data frame
+        #making data set by using variables that we obtained
         converted_rawdata=DataFrame(rawdata,columns=['Src','Eqid','Datetime','Lat','Lon','Magnitude','Depth','NST','Region'])
-        
-        #droppppiiinnnggggg each row if it has at least one na value
+        #converting data set into data frame
         without_NA_data=converted_rawdata.dropna(axis=0, how='any')
+        #droppppiiinnnggggg each row if it has at least one na value
     
         if without_NA_data.shape[0] == 0: #checking if the final dataframe is empty
            
@@ -100,20 +99,25 @@ DataCleaning("Dayum") #testing for invalid input
 
 # <codecell>
 
-past_hour=DataCleaning("past hour") #this will scrape past hour data and save it to your local worksapce
+past_hour=DataCleaning("past hour") #this will scrap past hour data and save it to your local worksapce
+past_hour
 
 # <codecell>
 
-past_day=DataCleaning("past day") #this will scrape past day data and save it to your local worksapce
+past_day=DataCleaning("past day") #this will scrap past day data and save it to your local worksapce
+past_day
 
 # <codecell>
 
-past_7days=DataCleaning("past 7days") #this will scrape past 7days data and save it to your local worksapce
+past_7days=DataCleaning("past 7days") #this will scrap past 7days data and save it to your local worksapce
+past_7days[0:30] #printing  first 30 data
 
 # <codecell>
 
-past_30days=DataCleaning("past 30days") #this will scrape past 30days data and save it to your local worksapce
+past_30days=DataCleaning("past 30days") #this will scrap past 30days data and save it to your local worksapce
+past_30days[0:30] #printing first 30 
 
+# <codecell>
 
 #now, plot the data
 def plot_quakes(quakes, box):
@@ -121,19 +125,27 @@ def plot_quakes(quakes, box):
                 urcrnrlon=box['urcrnrlon'],urcrnrlat=box['urcrnrlat'],
                 resolution='l',area_thresh=1000.,projection='merc')
     m.drawcountries()
-    m.fillcontinents(color='coral',lake_color='blue')
+    m.fillcontinents(color='green',lake_color='blue')
     m.drawmapboundary(fill_color='aqua')
     x, y = m(quakes.Lon, quakes.Lat)
     m.scatter(x, y, s=10*quakes.Magnitude, c=quakes.Depth, zorder=2)
     return m
 
-#You can test it using the following
+# <codecell>
+
+Alaska=past_7days[past_7days['Src']=='ak']
+
+# <codecell>
+
+#For alaska
 box1 = {'llcrnrlon' : -180, 'llcrnrlat' : 50., 'urcrnrlon' : -120., 'urcrnrlat' : 72}
+plot_quakes(Alaska, box1)
 
-alaska=past_7days[past_7days['Src']=='ak']
+# <codecell>
 
-plot_quakes(alaska, box1)
+#For any other states
 
-
-
+CI=past_7days[past_7days['Src']=='ci']
+box1 = {'llcrnrlon' : -130, 'llcrnrlat' :30, 'urcrnrlon' : -70., 'urcrnrlat' : 50}
+plot_quakes(CI, box1)
 
