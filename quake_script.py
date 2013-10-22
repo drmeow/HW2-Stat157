@@ -129,4 +129,11 @@ def plot_quakes(quakes, box):
 
 #You can test it using the following
 box1 = {'llcrnrlon' : -180, 'llcrnrlat' : 50., 'urcrnrlon' : -120., 'urcrnrlat' : 72}
+
+alaska=past_7days[past_7days['Src']=='ak']
+
 plot_quakes(alaska, box1)
+
+
+
+
