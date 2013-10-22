@@ -13,6 +13,21 @@ from mpl_toolkits.basemap import Basemap
 
 # <codecell>
 
+#now, plot the data
+def plot_quakes(quakes, box):
+    m = Basemap(llcrnrlon=box['llcrnrlon'],llcrnrlat=box['llcrnrlat'],
+                urcrnrlon=box['urcrnrlon'],urcrnrlat=box['urcrnrlat'],
+                resolution='l',area_thresh=1000.,projection='merc')
+    m.drawcountries()
+    m.fillcontinents(color='green',lake_color='blue')
+    m.drawmapboundary(fill_color='aqua')
+    x, y = m(quakes.Lon, quakes.Lat)
+    m.scatter(x, y, s=10*quakes.Magnitude, c=quakes.Depth, zorder=2)
+    return m
+
+# <codecell>
+# <codecell>
+
 def Milli_to_DateTime(millisec): #converting millsec time data into recognizable time data 
     utc = pytz.utc # setting UTC 
     fmt = '%A, %B %d, %Y %H:%M:%S %Z' #setting output 
@@ -117,21 +132,6 @@ past_7days[0:30] #printing  first 30 data
 past_30days=DataCleaning("past 30days") #this will scrap past 30days data and save it to your local worksapce
 past_30days[0:30] #printing first 30 
 
-# <codecell>
-
-#now, plot the data
-def plot_quakes(quakes, box):
-    m = Basemap(llcrnrlon=box['llcrnrlon'],llcrnrlat=box['llcrnrlat'],
-                urcrnrlon=box['urcrnrlon'],urcrnrlat=box['urcrnrlat'],
-                resolution='l',area_thresh=1000.,projection='merc')
-    m.drawcountries()
-    m.fillcontinents(color='green',lake_color='blue')
-    m.drawmapboundary(fill_color='aqua')
-    x, y = m(quakes.Lon, quakes.Lat)
-    m.scatter(x, y, s=10*quakes.Magnitude, c=quakes.Depth, zorder=2)
-    return m
-
-# <codecell>
 
 Alaska=past_7days[past_7days['Src']=='ak']
 
